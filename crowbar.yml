@@ -52,3 +52,6 @@ rpms:
   pkgs:
     # rabbitmq stuff
     - rabbitmq-server
+
+extra_files:
+  https://www.rabbitmq.com/releases/rabbitmq-server/v3.2.3/rabbitmq-server-3.2.3-1.noarch.rpm rabbitmq

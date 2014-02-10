@@ -41,8 +41,24 @@ template "/etc/rabbitmq/rabbitmq.config" do
   notifies :restart, "service[rabbitmq-server]"
 end
 
-package "rabbitmq-server"
-package "rabbitmq-server-plugins" if node.platform == "suse"
+unless node.platform == "centos"
+  package "rabbitmq-server"
+  package "rabbitmq-server-plugins" if node.platform == "suse"
+else
+  rpm_url = rabbitmq[:rabbitmq][:rpm_package]
+  rpm_filename = rpm_url.split('/').last
+
+  remote_file rpm_url do
+    source rpm_url
+    path File.join("tmp",rpm_filename)
+    action :create_if_missing
+  end
+
+  rpm_package "rabbitmq-server" do
+    source "/tmp/#{rpm_filename}"
+    action :install
+  end  
+end
 
 case node["platform"]
 when "suse"

@@ -6,7 +6,8 @@
       "port": 5672,
       "password": "",
       "user": "nova",
-      "vhost": "/nova"
+      "vhost": "/nova",
+      "rpm_package": "http://<ADMINWEB>/files/rabbitmq/rabbitmq-server-3.2.3-1.noarch.rpm"
     }
   },
   "deployment": {

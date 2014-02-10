@@ -52,6 +52,14 @@ class RabbitmqService < ServiceObject
     return if all_nodes.empty?
 
     @logger.debug("Rabbitmq apply_role_pre_chef_call: leaving")
+
+    nodes = NodeObject.find("roles:provisioner-server")
+    unless nodes.nil? or nodes.length < 1
+      admin_ip = nodes[0].get_network_by_type("admin")["address"]
+      web_port = nodes[0]["provisioner"]["web_port"]
+      rpm_package_path = role.default_attributes["rabbitmq"]["rpm_package"].gsub("<ADMINWEB>", "#{admin_ip}:#{web_port}")
+      role.default_attributes["quantum"]["rpm_package"] = rpm_package_path
+    end
   end
 
   def validate_proposal_after_save proposal
