@@ -58,8 +58,11 @@ class RabbitmqService < ServiceObject
       admin_ip = nodes[0].get_network_by_type("admin")["address"]
       web_port = nodes[0]["provisioner"]["web_port"]
       rpm_package_path = role.default_attributes["rabbitmq"]["rpm_package"].gsub("<ADMINWEB>", "#{admin_ip}:#{web_port}")
-      role.default_attributes["quantum"]["rpm_package"] = rpm_package_path
+      role.default_attributes["rabbitmq"]["rpm_package"] = rpm_package_path
     end
+    
+    role.save
+    
   end
 
   def validate_proposal_after_save proposal

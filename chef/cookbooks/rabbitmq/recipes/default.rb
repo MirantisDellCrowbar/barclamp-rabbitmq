@@ -45,7 +45,7 @@ unless node.platform == "centos"
   package "rabbitmq-server"
   package "rabbitmq-server-plugins" if node.platform == "suse"
 else
-  rpm_url = rabbitmq[:rabbitmq][:rpm_package]
+  rpm_url = node[:rabbitmq][:rpm_package]
   rpm_filename = rpm_url.split('/').last
 
   remote_file rpm_url do
@@ -53,6 +53,8 @@ else
     path File.join("tmp",rpm_filename)
     action :create_if_missing
   end
+
+  package "erlang"
 
   rpm_package "rabbitmq-server" do
     source "/tmp/#{rpm_filename}"
